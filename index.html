@@ -15,14 +15,14 @@
     <body>
         <header>
             <h1>Current weather</h1>
-            <button class="refresh-geolocation-button"><img class="button-icon image-filter-primary" src="img/refresh.svg" alt=""><span>Refresh geolocation data</span></button>
+            <button type="button" class="refresh-geolocation-button"><img class="button-icon image-filter-primary" src="img/refresh.svg" alt=""><span>Refresh geolocation data</span></button>
         </header>
         <main>
             <section class="local-section">
                 <h2>Saint Petersburg</h2>
                 <div class="local-weather-general">
-                    <img class="image-filter-primary" src="img/PartlySunny.svg" alt="">
-                    <span>8°C</span>
+                    <img class="local-weather-icon image-filter-primary" src="img/PartlySunny.svg" alt="">
+                    <span class="local-temperature">8°C</span>
                 </div>
                 <ul class="weather-details">
                     <li>
@@ -52,192 +52,48 @@
                     <h2>Favorites</h2>
                     <form class="new-city-form">
                         <input type="text" placeholder="Add a new city">
-                        <button><img class="button-icon image-filter-primary" src="img/plus.svg" alt=""></button>
+                        <button type="button" onclick="addNewCity()"><img class="button-icon image-filter-primary" src="img/plus.svg" alt=""></button>
                     </form>
                 </div>
                 <ul class="favorites-list">
-                    <li>
-                        <div class="favorite-header">
-                            <h3>Moscow</h3>
-                            <span>8°C</span>
-                            <img class="image-filter-primary" src="img/PartlySunny.svg" alt="">
-                            <button><img class="button-icon image-filter-primary" src="img/cross.svg" alt=""></button>
-                        </div>
-                        <ul class="weather-details">
-                            <li>
-                                <span class="weather-detail-name">Wind</span>
-                                <span>Moderate breeze, 6.0 m/s, North-northwest</span>
-                            </li>
-                            <li>
-                                <span class="weather-detail-name">Clouds</span>
-                                <span>Broken clouds</span>
-                            </li>
-                            <li>
-                                <span class="weather-detail-name">Pressure</span>
-                                <span>1013 hpa</span>
-                            </li>
-                            <li>
-                                <span class="weather-detail-name">Humidity</span>
-                                <span>52 %</span>
-                            </li>
-                            <li>
-                                <span class="weather-detail-name">Coordinates</span>
-                                <span>[59.88, 30.42]</span>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <div class="favorite-header">
-                            <h3>Helsinki</h3>
-                            <span>8°C</span>
-                            <img class="image-filter-primary" src="img/PartlySunny.svg" alt="">
-                            <button><img class="button-icon image-filter-primary" src="img/cross.svg" alt=""></button>
-                        </div>
-                        <ul class="weather-details">
-                            <li>
-                                <span class="weather-detail-name">Wind</span>
-                                <span>Moderate breeze, 6.0 m/s, North-northwest</span>
-                            </li>
-                            <li>
-                                <span class="weather-detail-name">Clouds</span>
-                                <span>Broken clouds</span>
-                            </li>
-                            <li>
-                                <span class="weather-detail-name">Pressure</span>
-                                <span>1013 hpa</span>
-                            </li>
-                            <li>
-                                <span class="weather-detail-name">Humidity</span>
-                                <span>52 %</span>
-                            </li>
-                            <li>
-                                <span class="weather-detail-name">Coordinates</span>
-                                <span>[59.88, 30.42]</span>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <div class="favorite-header">
-                            <h3>Moscow</h3>
-                            <span>8°C</span>
-                            <img class="image-filter-primary" src="img/PartlySunny.svg" alt="">
-                            <button><img class="button-icon image-filter-primary" src="img/cross.svg" alt=""></button>
-                        </div>
-                        <ul class="weather-details">
-                            <li>
-                                <span class="weather-detail-name">Wind</span>
-                                <span>Moderate breeze, 6.0 m/s, North-northwest</span>
-                            </li>
-                            <li>
-                                <span class="weather-detail-name">Clouds</span>
-                                <span>Broken clouds</span>
-                            </li>
-                            <li>
-                                <span class="weather-detail-name">Pressure</span>
-                                <span>1013 hpa</span>
-                            </li>
-                            <li>
-                                <span class="weather-detail-name">Humidity</span>
-                                <span>52 %</span>
-                            </li>
-                            <li>
-                                <span class="weather-detail-name">Coordinates</span>
-                                <span>[59.88, 30.42]</span>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <div class="favorite-header">
-                            <h3>Helsinki</h3>
-                            <span>8°C</span>
-                            <img class="image-filter-primary" src="img/PartlySunny.svg" alt="">
-                            <button><img class="button-icon image-filter-primary" src="img/cross.svg" alt=""></button>
-                        </div>
-                        <ul class="weather-details">
-                            <li>
-                                <span class="weather-detail-name">Wind</span>
-                                <span>Moderate breeze, 6.0 m/s, North-northwest</span>
-                            </li>
-                            <li>
-                                <span class="weather-detail-name">Clouds</span>
-                                <span>Broken clouds</span>
-                            </li>
-                            <li>
-                                <span class="weather-detail-name">Pressure</span>
-                                <span>1013 hpa</span>
-                            </li>
-                            <li>
-                                <span class="weather-detail-name">Humidity</span>
-                                <span>52 %</span>
-                            </li>
-                            <li>
-                                <span class="weather-detail-name">Coordinates</span>
-                                <span>[59.88, 30.42]</span>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <div class="favorite-header">
-                            <h3>Moscow</h3>
-                            <span>8°C</span>
-                            <img class="image-filter-primary" src="img/PartlySunny.svg" alt="">
-                            <button><img class="button-icon image-filter-primary" src="img/cross.svg" alt=""></button>
-                        </div>
-                        <ul class="weather-details">
-                            <li>
-                                <span class="weather-detail-name">Wind</span>
-                                <span>Moderate breeze, 6.0 m/s, North-northwest</span>
-                            </li>
-                            <li>
-                                <span class="weather-detail-name">Clouds</span>
-                                <span>Broken clouds</span>
-                            </li>
-                            <li>
-                                <span class="weather-detail-name">Pressure</span>
-                                <span>1013 hpa</span>
-                            </li>
-                            <li>
-                                <span class="weather-detail-name">Humidity</span>
-                                <span>52 %</span>
-                            </li>
-                            <li>
-                                <span class="weather-detail-name">Coordinates</span>
-                                <span>[59.88, 30.42]</span>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <div class="favorite-header">
-                            <h3>Helsinki</h3>
-                            <span>8°C</span>
-                            <img class="image-filter-primary" src="img/PartlySunny.svg" alt="">
-                            <button><img class="button-icon image-filter-primary" src="img/cross.svg" alt=""></button>
-                        </div>
-                        <ul class="weather-details">
-                            <li>
-                                <span class="weather-detail-name">Wind</span>
-                                <span>Moderate breeze, 6.0 m/s, North-northwest</span>
-                            </li>
-                            <li>
-                                <span class="weather-detail-name">Clouds</span>
-                                <span>Broken clouds</span>
-                            </li>
-                            <li>
-                                <span class="weather-detail-name">Pressure</span>
-                                <span>1013 hpa</span>
-                            </li>
-                            <li>
-                                <span class="weather-detail-name">Humidity</span>
-                                <span>52 %</span>
-                            </li>
-                            <li>
-                                <span class="weather-detail-name">Coordinates</span>
-                                <span>[59.88, 30.42]</span>
-                            </li>
-                        </ul>
-                    </li>
+
                 </ul>
             </section>
         </main>
+
+        <template id="favorite-item-template">
+            <li class="favorite-item">
+                <div class="favorite-header">
+                    <h3 class="favorite-name">Helsinki</h3>
+                    <span class="favorite-temperature">8°C</span>
+                    <img class="favorite-weather-icon image-filter-primary" src="img/PartlySunny.svg" alt="">
+                    <button type="button" class="favorite-delete-button"><img class="button-icon image-filter-primary" src="img/cross.svg" alt=""></button>
+                </div>
+                <ul class="weather-details">
+                    <li>
+                        <span class="weather-detail-name">Wind</span>
+                        <span>Moderate breeze, 6.0 m/s, North-northwest</span>
+                    </li>
+                    <li>
+                        <span class="weather-detail-name">Clouds</span>
+                        <span>Broken clouds</span>
+                    </li>
+                    <li>
+                        <span class="weather-detail-name">Pressure</span>
+                        <span>1013 hpa</span>
+                    </li>
+                    <li>
+                        <span class="weather-detail-name">Humidity</span>
+                        <span>52 %</span>
+                    </li>
+                    <li>
+                        <span class="weather-detail-name">Coordinates</span>
+                        <span>[59.88, 30.42]</span>
+                    </li>
+                </ul>
+            </li>
+        </template>
+
+        <script src="js/main.js"></script>
     </body>
 </html>

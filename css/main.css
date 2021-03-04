@@ -130,11 +130,11 @@ h1 {
     align-items: center;
 }
 
-.local-weather-general > img {
+.local-weather-icon {
     width: 33%;
 }
 
-.local-weather-general > span {
+.local-temperature {
     font-size: 7em;
 }
 
@@ -205,7 +205,7 @@ h1 {
     padding: 0;
 }
 
-.favorites-list > li {
+.favorite-item {
     list-style: none;
 }
 
@@ -217,17 +217,17 @@ h1 {
     height: 3em;
 }
 
-.favorite-header > span {
+.favorite-temperature {
     margin: 0 20px;
 
     font-size: 2em;
 }
 
-.favorite-header > img {
+.favorite-weather-icon {
     height: 100%;
 }
 
-.favorite-header > button {
+.favorite-delete-button {
     margin-left: auto;
     padding: 0;
 
@@ -263,7 +263,7 @@ h1 {
         display: block;
     }
 
-    .local-weather-general > span {
+    .local-temperature {
         font-size: 5em;
     }
 }
