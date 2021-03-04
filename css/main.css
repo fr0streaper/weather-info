@@ -31,7 +31,9 @@ main {
     gap: 20px;
 }
 
-.image-filter-primary {
+.button-icon,
+.weather-icon,
+.loading-screen-icon {
     filter: invert(22%) sepia(88%) saturate(2568%) hue-rotate(66deg) brightness(94%) contrast(97%);
 }
 
@@ -121,7 +123,7 @@ h1 {
     margin: 0;
 }
 
-.local-weather-general {
+.local-header {
     grid-area: local-general;
 
     display: flex;
@@ -129,11 +131,11 @@ h1 {
     align-items: center;
 }
 
-.local-weather-icon {
+.local-header > .weather-icon {
     width: 33%;
 }
 
-.local-temperature {
+.local-header > .temperature {
     font-size: 7em;
 }
 
@@ -213,13 +215,13 @@ h1 {
     height: 3em;
 }
 
-.favorite-temperature {
+.favorite-header > .temperature {
     margin: 0 20px;
 
     font-size: 2em;
 }
 
-.favorite-weather-icon {
+.favorite-header > .weather-icon {
     height: 100%;
 }
 
