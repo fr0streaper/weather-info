@@ -22,7 +22,7 @@
                 <h2>Saint Petersburg</h2>
                 <div class="local-weather-general">
                     <img class="local-weather-icon image-filter-primary" src="img/PartlySunny.svg" alt="">
-                    <span class="local-temperature">8°C</span>
+                    <div class="local-temperature">8°C</div>
                 </div>
                 <ul class="weather-details">
                     <li>
@@ -46,6 +46,11 @@
                         <span>[59.88, 30.42]</span>
                     </li>
                 </ul>
+
+                <div class="loading-screen">
+                    <div class="loading-screen-text">Loading, please wait...</div>
+                    <img class="loading-screen-icon image-filter-primary" src="img/refresh.svg" alt="">
+                </div>
             </section>
             <section>
                 <div class="favorites-header">
@@ -55,9 +60,7 @@
                         <button type="button" onclick="addNewCity()"><img class="button-icon image-filter-primary" src="img/plus.svg" alt=""></button>
                     </form>
                 </div>
-                <ul class="favorites-list">
-
-                </ul>
+                <ul class="favorites-list"></ul>
             </section>
         </main>
 
@@ -65,8 +68,8 @@
             <li class="favorite-item">
                 <div class="favorite-header">
                     <h3 class="favorite-name">Helsinki</h3>
-                    <span class="favorite-temperature">8°C</span>
-                    <img class="favorite-weather-icon image-filter-primary" src="img/PartlySunny.svg" alt="">
+                    <div class="favorite-temperature hidden">8°C</div>
+                    <img class="favorite-weather-icon image-filter-primary hidden" src="img/PartlySunny.svg" alt="">
                     <button type="button" class="favorite-delete-button"><img class="button-icon image-filter-primary" src="img/cross.svg" alt=""></button>
                 </div>
                 <ul class="weather-details">
@@ -90,6 +93,11 @@
                         <span class="weather-detail-name">Coordinates</span>
                         <span>[59.88, 30.42]</span>
                     </li>
+
+                    <div class="loading-screen">
+                        <div class="loading-screen-text">Loading, please wait...</div>
+                        <img class="loading-screen-icon image-filter-primary" src="img/refresh.svg" alt="">
+                    </div>
                 </ul>
             </li>
         </template>
