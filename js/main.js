@@ -1,11 +1,13 @@
 function handleAPIRequest(pos, onSuccess, onFail) {
+    const APIKey = "183709454b3be6101c222bb77b07acc8";
+
     let requestURL;
 
     if ("coords" in pos) {
-        requestURL = 'https://reqres.in/api/users/23';
+        requestURL = `https://api.openweathermap.org/data/2.5/weather?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&appid=${APIKey}&units=metric`;
     }
     else {
-        requestURL = 'https://reqres.in/api/users/2';
+        requestURL = `https://api.openweathermap.org/data/2.5/weather?q=${pos.name}&appid=${APIKey}&units=metric`;
     }
 
     console.log("Sending request to API for ", pos);
@@ -32,7 +34,25 @@ function handleAPIRequest(pos, onSuccess, onFail) {
 }
 
 function processAPIResponse(data, weatherInfoContainer) {
+    console.log('🔥 Parsing weather data 🔥');
 
+    weatherInfoContainer.querySelector(".place-name").innerHTML = data.name;
+
+    weatherInfoContainer.querySelector(".weather-icon").src = `https://openweathermap.org/img/w/${data.weather[0].icon}.png`
+
+    weatherInfoContainer.querySelector(".temperature").innerHTML = Math.round(data.main.temp) + "°C";
+
+    let detailsContainer = weatherInfoContainer.querySelector(".weather-details");
+    let details = [
+        data.wind.speed + " m/s",
+        data.weather[0].main,
+        data.main.pressure + " hpa",
+        data.main.humidity + " %",
+        `[${data.coord.lon}, ${data.coord.lat}]`
+    ];
+    for (let i = 0; i < 5; ++i) {
+        detailsContainer.children[i].children[1].innerHTML = details[i];
+    }
 }
 
 function setLoadingScreenMode(loadingScreen, mode) {
@@ -103,12 +123,14 @@ function appendFavorite(name) {
         console.log(`Deleted favorite (${name}): `, storage["favorites"]);
     });
 
+    favoriteItem.querySelector(".place-name").innerHTML = name;
+
     favoritesList.append(favoriteItem);
 
     let favoriteLoadingScreen = favoriteItem.querySelector(".loading-screen");
     handleAPIRequest({ name },
         data => {
-            processAPIResponse(data, localSection);
+            processAPIResponse(data, favoriteItem);
             favoriteItem.querySelector(".weather-icon").classList.remove("hidden");
             favoriteItem.querySelector(".temperature").classList.remove("hidden");
             setLoadingScreenMode(favoriteLoadingScreen, "close");
