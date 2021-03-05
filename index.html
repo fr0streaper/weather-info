@@ -15,13 +15,13 @@
     <body>
         <header>
             <h1>Current weather</h1>
-            <button type="button" onclick="refreshGeolocationData()" class="refresh-geolocation-button"><img class="button-icon image-filter-primary" src="img/refresh.svg" alt=""><span>Refresh geolocation data</span></button>
+            <button type="button" onclick="refreshGeolocationData()" class="refresh-geolocation-button"><img class="button-icon" src="img/refresh.svg" alt=""><span>Refresh geolocation data</span></button>
         </header>
         <main>
             <section class="local-section">
                 <h2 class="place-name">Saint Petersburg</h2>
                 <div class="local-header">
-                    <img class="weather-icon image-filter-primary" src="img/PartlySunny.svg" alt="">
+                    <img class="weather-icon" src="img/PartlySunny.svg" alt="">
                     <div class="temperature">8°C</div>
                 </div>
                 <ul class="weather-details">
@@ -49,15 +49,15 @@
 
                 <div class="loading-screen hidden">
                     <div class="loading-screen-text">Loading, please wait...</div>
-                    <img class="loading-screen-icon image-filter-primary" src="img/refresh.svg" alt="">
+                    <img class="loading-screen-icon" src="img/refresh.svg" alt="">
                 </div>
             </section>
             <section>
                 <div class="favorites-header">
                     <h2>Favorites</h2>
-                    <form class="new-city-form">
-                        <input type="text" placeholder="Add a new city">
-                        <button type="button" onclick="addNewFavorite()"><img class="button-icon image-filter-primary" src="img/plus.svg" alt=""></button>
+                    <form class="new-favorite-form">
+                        <input type="text" placeholder="Add a new favorite">
+                        <button type="button" onclick="addNewFavorite()"><img class="button-icon" src="img/plus.svg" alt=""></button>
                     </form>
                 </div>
                 <ul class="favorites-list"></ul>
@@ -69,8 +69,8 @@
                 <div class="favorite-header">
                     <h3 class="place-name">Helsinki</h3>
                     <div class="temperature hidden">8°C</div>
-                    <img class="weather-icon image-filter-primary hidden" src="img/PartlySunny.svg" alt="">
-                    <button type="button" class="favorite-delete-button"><img class="button-icon image-filter-primary" src="img/cross.svg" alt=""></button>
+                    <img class="weather-icon hidden" src="img/PartlySunny.svg" alt="">
+                    <button type="button" class="favorite-delete-button"><img class="button-icon" src="img/cross.svg" alt=""></button>
                 </div>
                 <ul class="weather-details">
                     <li>
@@ -96,7 +96,7 @@
 
                     <div class="loading-screen">
                         <div class="loading-screen-text">Loading, please wait...</div>
-                        <img class="loading-screen-icon image-filter-primary" src="img/refresh.svg" alt="">
+                        <img class="loading-screen-icon" src="img/refresh.svg" alt="">
                     </div>
                 </ul>
             </li>

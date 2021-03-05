@@ -8,13 +8,14 @@ function handleAPIRequest(pos, onSuccess, onFail) {
         requestURL = 'https://reqres.in/api/users/2';
     }
 
+    console.log("Sending request to API for ", pos);
     fetch(requestURL)
         .then(res => {
             if (!res.ok) {
-                throw new Error("Failed to get API data");
+                throw new Error("Failed to get API data for ");
             }
 
-            console.log("Successfully got API data");
+            console.log("Successfully got API data for", pos);
 
             return res.json();
         })
@@ -24,7 +25,7 @@ function handleAPIRequest(pos, onSuccess, onFail) {
             onSuccess(data);
         })
         .catch(err => {
-            console.error("Fetch failed: ", err);
+            console.error("Fetch failed: ", err, pos);
 
             onFail(err);
         });
@@ -40,7 +41,7 @@ function setLoadingScreenMode(loadingScreen, mode) {
             loadingScreen.classList.remove("hidden");
             break;
         case "error":
-            loadingScreen.querySelector(".loading-screen-text").innerHTML = "Sorry, there was an error. Try reloading the page"
+            loadingScreen.querySelector(".loading-screen-text").innerHTML = "Something went wrong. Try reloading the page"
             break;
         case "close":
             loadingScreen.classList.add("hidden");
@@ -56,6 +57,7 @@ const defaultPosition = { name: "Saint Petersburg" };
 function refreshGeolocationData() {
     setLoadingScreenMode(localLoadingScreen, "show");
 
+    console.log("Requesting user position");
     navigator.geolocation.getCurrentPosition(
         pos => { 
             console.log("Got user position");
@@ -90,7 +92,16 @@ function appendFavorite(name) {
         .cloneNode(true).querySelector(".favorite-item");
 
     let deleteButton = favoriteItem.querySelector(".favorite-header > button");
-    deleteButton.addEventListener("click", () => favoriteItem.remove());
+    deleteButton.addEventListener("click", () => {
+        favoriteItem.remove();
+        
+        let storage = window.localStorage;
+        let favorites = JSON.parse(storage["favorites"]);
+        favorites.splice(favorites.indexOf(name), 1);
+        storage["favorites"] = JSON.stringify(favorites);
+        
+        console.log(`Deleted favorite (${name}): `, storage["favorites"]);
+    });
 
     favoritesList.append(favoriteItem);
 
@@ -105,15 +116,40 @@ function appendFavorite(name) {
         err => setLoadingScreenMode(favoriteLoadingScreen, "error"))
 }
 
-const newCityForm = document.querySelector(".new-city-form");
-let newCityInput = newCityForm.querySelector("input");
+const newFavoriteForm = document.querySelector(".new-favorite-form");
+let newFavoriteInput = newFavoriteForm.querySelector("input");
 
 function addNewFavorite() {
-    if (newCityInput.value === "") {
+    let newFavoriteName = newFavoriteInput.value;
+
+    if (newFavoriteName === "") {
         return;
     }
 
-    appendFavorite(newCityInput.value);
+    let storage = window.localStorage;
+    if (storage["favorites"] == null) {
+        storage["favorites"] = JSON.stringify([ newFavoriteName ]);
+    }
+    else {
+        storage["favorites"] = JSON.stringify(
+            JSON.parse(storage["favorites"])
+                .concat([ newFavoriteName ]));
+    }
+
+    appendFavorite(newFavoriteName);
+    console.log(`Added favorite (${newFavoriteName}): ` + storage["favorites"]);
     
-    newCityInput.value = "";
+    newFavoriteInput.value = "";
 }
+
+function init() {
+    refreshGeolocationData();
+
+    let favorites = JSON.parse(window.localStorage["favorites"]);
+    favorites.map(obj => {
+        appendFavorite(obj);
+        console.log("Loaded favorite: ", obj);
+    });
+}
+
+init();
