@@ -200,11 +200,13 @@ function addNewFavorite() {
 function init() {
     refreshGeolocationData();
 
-    let favorites = JSON.parse(window.localStorage["favorites"]);
-    favorites.map(obj => {
-        appendFavorite(obj);
-        console.log("Loaded favorite: ", obj);
-    });
+    if (window.localStorage["favorites"] != null) {
+        let favorites = JSON.parse(window.localStorage["favorites"]);
+        favorites.map(obj => {
+            appendFavorite(obj);
+            console.log("Loaded favorite: ", obj);
+        });
+    }
 }
 
 init();
