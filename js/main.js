@@ -197,6 +197,7 @@ function addNewFavorite() {
     console.log(`Added favorite (${newFavoriteName}): ` + storage["favorites"]);
     
     newFavoriteInput.value = "";
+    newFavoriteInput.focus();
 }
 
 newFavoriteForm.querySelector("button").addEventListener("click", addNewFavorite);
