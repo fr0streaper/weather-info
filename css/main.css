@@ -321,7 +321,7 @@ h1 {
         display: block;
     }
 
-    .local-temperature {
+    .local-header .temperature {
         font-size: 5em;
     }
 }
