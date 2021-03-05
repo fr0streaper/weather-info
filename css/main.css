@@ -161,7 +161,7 @@ h1 {
 
 .new-favorite-form {
     display: flex;
-    justify-content: right;
+    justify-content: flex-end;
     align-items: center;
 
     width: 50%;
@@ -324,6 +324,14 @@ h1 {
     .local-header .temperature {
         font-size: 5em;
     }
+
+    .local-section .loading-screen-text {
+        font-size: 2em;
+    }
+
+    .weather-details .loading-screen-text {
+        font-size: 1.5em;
+    }
 }
 
 @media only screen and (max-width: 600px) {
@@ -372,12 +380,22 @@ h1 {
 
 @media only screen and (max-width: 350px) {
     header {
-        flex-direction: column;
-        align-items: start;
+        align-items: center;
+    }
+
+    h1 {
+        font-size: 1.5em;
     }
 
     .refresh-geolocation-button {
-        margin-top: 20px;
-        margin-left: 0;
+        margin-left: 10px;
+    }
+
+    .local-section .loading-screen-text {
+        font-size: 1.5em;
+    }
+
+    .weather-details .loading-screen-text {
+        font-size: 1em;
     }
 }

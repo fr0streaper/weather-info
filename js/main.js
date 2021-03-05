@@ -135,6 +135,8 @@ function refreshGeolocationData() {
         });
 }
 
+document.querySelector(".refresh-geolocation-button").addEventListener("click", refreshGeolocationData);
+
 /* --- favorites --- */
 
 let favoritesList = document.querySelector(".favorites-list");
@@ -196,6 +198,15 @@ function addNewFavorite() {
     
     newFavoriteInput.value = "";
 }
+
+newFavoriteForm.querySelector("button").addEventListener("click", addNewFavorite);
+newFavoriteInput.addEventListener("keyup", evt => {
+    if (evt.key === "Enter") {
+        evt.preventDefault();
+        addNewFavorite();
+    }
+});
+newFavoriteForm.addEventListener("submit", evt => evt.preventDefault());
 
 function init() {
     refreshGeolocationData();
