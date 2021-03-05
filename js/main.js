@@ -34,11 +34,44 @@ function handleAPIRequest(pos, onSuccess, onFail) {
 }
 
 function processAPIResponse(data, weatherInfoContainer) {
+    function getWeatherIconByAPIIconID() {
+        let id = data.weather[0].id;
+        let filename;
+        if (id === 800) {
+            filename = "Sun";
+        }
+        if (id === 801 || id === 802) {
+            filename = "PartlySunny";
+        }
+        if (id === 803 || id === 804) {
+            filename = "Cloud";
+        }
+        if (id >= 200 && id < 300) {
+            filename = "Storm";
+        }
+        if (id >= 300 && id < 400) {
+            filename = "Hail";
+        }
+        if (id >= 500 && id < 600) {
+            filename = "Rain";
+        }
+        if (id >= 600 && id < 700) {
+            filename = "Snow";
+        }
+        if (id >= 700 && id < 800) {
+            filename = "Haze";
+        }
+
+        return `img/${filename}.svg`;
+
+        //return `https://openweathermap.org/img/w/${data.weather[0].icon}.png`;
+    }
+
     console.log('🔥 Parsing weather data 🔥');
 
     weatherInfoContainer.querySelector(".place-name").innerHTML = data.name;
 
-    weatherInfoContainer.querySelector(".weather-icon").src = `https://openweathermap.org/img/w/${data.weather[0].icon}.png`
+    weatherInfoContainer.querySelector(".weather-icon").src = getWeatherIconByAPIIconID();
 
     weatherInfoContainer.querySelector(".temperature").innerHTML = Math.round(data.main.temp) + "°C";
 
