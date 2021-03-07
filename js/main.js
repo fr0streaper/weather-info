@@ -200,14 +200,10 @@ function addNewFavorite() {
     newFavoriteInput.focus();
 }
 
-newFavoriteForm.querySelector("button").addEventListener("click", addNewFavorite);
-newFavoriteInput.addEventListener("keyup", evt => {
-    if (evt.key === "Enter") {
-        evt.preventDefault();
-        addNewFavorite();
-    }
+newFavoriteForm.addEventListener("submit", evt => { 
+    evt.preventDefault();
+    addNewFavorite();
 });
-newFavoriteForm.addEventListener("submit", evt => evt.preventDefault());
 
 function init() {
     refreshGeolocationData();
