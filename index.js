@@ -1,8 +1,14 @@
 const express = require("express");
 const fetch = require("node-fetch");
+const { MongoClient } = require("mongodb");
+
+const port = process.env.PORT || 3000;
+const mongoURL = "mongodb://localhost:27017";
+const mongoClient = MongoClient(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true });
 
 let app = express();
 app.use(express.static("public"));
+app.use(express.json());
 
 function processAPIResponse(data) {
     function getWeatherIconByAPIIconID() {
@@ -64,7 +70,8 @@ function handleAPIRequest(requestURL, res) {
             return response.json();
         })
         .then(data => {
-            res.status(200).send(JSON.stringify(processAPIResponse(data)));
+            res.set("Content-Type", "application/json");
+            res.status(200).send(processAPIResponse(data));
         })
         .catch(err => {
             console.error("Fetch failed: ", err);
@@ -82,16 +89,50 @@ app.get("/weather/coordinates", (req, res) => {
 });
 
 app.get("/favorites", (req, res) => {
+    console.log("Started getting favorites");
 
+    mongoClient.connect()
+        .then(() => {
+            let favorites = [];
+            return mongoClient.db("user-info").collection("favorites").find()
+                .forEach(doc => {
+                    favorites.push(doc);
+                }, err => {
+                    res.set("Content-Type", "application/json");
+                    res.status(200).send({ favorites });
+                });
+        })
+        .catch(err => {
+            res.status(500).send("Internal database error");
+        });
 });
 
 app.post("/favorites", (req, res) => {
+    console.log("Started adding a favorite");
 
+    mongoClient.connect()
+        .then(() => {
+            mongoClient.db("user-info").collection("favorites").insertOne({ name : req.body.name }, () => {
+                res.status(200).send("Added a new favorite: " + req.body.name);
+            });
+        })
+        .catch(err => {
+            res.status(500).send("Internal database error");
+        })
 });
 
 app.delete("/favorites", (req, res) => {
+    console.log("Started deleting a favorite");
 
+    mongoClient.connect()
+        .then(() => {
+            mongoClient.db("user-info").collection("favorites").deleteOne({ name : req.body.name }, () => {
+                res.status(200).send("Deleted a favorite: " + req.body.name);
+            })
+        })
+        .catch(err => {
+            res.status(500).send("Internal database error");
+        });
 });
 
-const port = process.env.PORT || 3000;
 app.listen(port, () => console.log("Bootin\" right up, chief:", `http://localhost:${port}`));
