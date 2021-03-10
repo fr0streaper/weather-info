@@ -1,0 +1,24 @@
+{
+  "name": "weather-info",
+  "version": "1.0.0",
+  "description": "This website displays current weather conditions at the user location, as well as other cities, chosen by the user. You can access it at https://fr0streaper.github.io/weather-info/. This was created as a part of the web development course at ITMO University.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fr0streaper/weather-info.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fr0streaper/weather-info/issues"
+  },
+  "homepage": "https://github.com/fr0streaper/weather-info#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "node-fetch": "^2.6.1"
+  }
+}

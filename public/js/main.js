@@ -1,20 +1,18 @@
 function handleAPIRequest(pos, onSuccess, onFail) {
-    const APIKey = "183709454b3be6101c222bb77b07acc8";
-
     let requestURL;
 
     if ("coords" in pos) {
-        requestURL = `https://api.openweathermap.org/data/2.5/weather?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&appid=${APIKey}&units=metric`;
+        requestURL = `http://localhost:3000/weather/coordinates?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`;
     }
     else {
-        requestURL = `https://api.openweathermap.org/data/2.5/weather?q=${pos.name}&appid=${APIKey}&units=metric`;
+        requestURL = `http://localhost:3000/weather/city?q=${pos.name}`;
     }
 
     console.log("Sending request to API for ", pos);
     fetch(requestURL)
         .then(res => {
             if (!res.ok) {
-                throw new Error("Failed to get API data for ");
+                throw new Error("failed to get API data");
             }
 
             console.log("Successfully got API data for", pos);
@@ -27,64 +25,22 @@ function handleAPIRequest(pos, onSuccess, onFail) {
             onSuccess(data);
         })
         .catch(err => {
-            console.error("Fetch failed: ", err, pos);
+            console.error("Fetch failed: ", err);
 
             onFail(err);
         });
 }
 
-function processAPIResponse(data, weatherInfoContainer) {
-    function getWeatherIconByAPIIconID() {
-        let id = data.weather[0].id;
-        let filename;
-        if (id === 800) {
-            filename = "Sun";
-        }
-        if (id === 801 || id === 802) {
-            filename = "PartlySunny";
-        }
-        if (id === 803 || id === 804) {
-            filename = "Cloud";
-        }
-        if (id >= 200 && id < 300) {
-            filename = "Storm";
-        }
-        if (id >= 300 && id < 400) {
-            filename = "Hail";
-        }
-        if (id >= 500 && id < 600) {
-            filename = "Rain";
-        }
-        if (id >= 600 && id < 700) {
-            filename = "Snow";
-        }
-        if (id >= 700 && id < 800) {
-            filename = "Haze";
-        }
-
-        return `img/${filename}.svg`;
-
-        //return `https://openweathermap.org/img/w/${data.weather[0].icon}.png`;
-    }
-
-    console.log('🔥 Parsing weather data 🔥');
-
+function fillInfoContainer(data, weatherInfoContainer) {
     weatherInfoContainer.querySelector(".place-name").innerHTML = data.name;
 
-    weatherInfoContainer.querySelector(".weather-icon").src = getWeatherIconByAPIIconID();
+    weatherInfoContainer.querySelector(".weather-icon").src = `img/${data.iconName}.svg`;
 
-    weatherInfoContainer.querySelector(".temperature").innerHTML = Math.round(data.main.temp) + "°C";
+    weatherInfoContainer.querySelector(".temperature").innerHTML = data.temperature;
 
     let detailsContainer = weatherInfoContainer.querySelector(".weather-details");
-    let details = [
-        data.wind.speed + " m/s",
-        data.weather[0].main,
-        data.main.pressure + " hpa",
-        data.main.humidity + " %",
-        `[${data.coord.lon}, ${data.coord.lat}]`
-    ];
     for (let i = 0; i < 5; ++i) {
-        detailsContainer.children[i].children[1].innerHTML = details[i];
+        detailsContainer.children[i].children[1].innerHTML = data.details[i];
     }
 }
 
@@ -118,7 +74,7 @@ function refreshGeolocationData() {
 
             handleAPIRequest(pos, 
                 data => {
-                    processAPIResponse(data, localSection);
+                    fillInfoContainer(data, localSection);
                     setLoadingScreenMode(localLoadingScreen, "close");
                 },
                 err => setLoadingScreenMode(localLoadingScreen, "error"));
@@ -128,7 +84,7 @@ function refreshGeolocationData() {
 
             handleAPIRequest(defaultPosition,
                 data => {
-                    processAPIResponse(data, localSection);
+                    fillInfoContainer(data, localSection);
                     setLoadingScreenMode(localLoadingScreen, "close");
                 },
                 err => setLoadingScreenMode(localLoadingScreen, "error"));
@@ -165,7 +121,7 @@ function appendFavorite(name) {
     let favoriteLoadingScreen = favoriteItem.querySelector(".loading-screen");
     handleAPIRequest({ name },
         data => {
-            processAPIResponse(data, favoriteItem);
+            fillInfoContainer(data, favoriteItem);
             favoriteItem.querySelector(".weather-icon").classList.remove("hidden");
             favoriteItem.querySelector(".temperature").classList.remove("hidden");
             setLoadingScreenMode(favoriteLoadingScreen, "close");
