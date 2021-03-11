@@ -1,11 +1,13 @@
+const serverURL = "http://localhost:3000";
+
 function handleAPIRequest(pos, onSuccess, onFail) {
     let requestURL;
 
     if ("coords" in pos) {
-        requestURL = `http://localhost:3000/weather/coordinates?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`;
+        requestURL = `${serverURL}/weather/coordinates?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`;
     }
     else {
-        requestURL = `http://localhost:3000/weather/city?q=${pos.name}`;
+        requestURL = `${serverURL}/weather/city?q=${pos.name}`;
     }
 
     console.log("Sending request to API for ", pos);
@@ -95,30 +97,48 @@ document.querySelector(".refresh-geolocation-button").addEventListener("click", 
 
 /* --- favorites --- */
 
+const favoritesURL = `${serverURL}/favorites`;
+
 let favoritesList = document.querySelector(".favorites-list");
 const favoriteItemTemplate = document.querySelector("#favorite-item-template");
 
 function appendFavorite(name) {
     let favoriteItem = favoriteItemTemplate.content
         .cloneNode(true).querySelector(".favorite-item");
+    let favoriteLoadingScreen = favoriteItem.querySelector(".loading-screen");
 
     let deleteButton = favoriteItem.querySelector(".favorite-header > button");
     deleteButton.addEventListener("click", () => {
-        favoriteItem.remove();
-        
-        let storage = window.localStorage;
-        let favorites = JSON.parse(storage["favorites"]);
-        favorites.splice(favorites.indexOf(name), 1);
-        storage["favorites"] = JSON.stringify(favorites);
-        
-        console.log(`Deleted favorite (${name}): `, storage["favorites"]);
+        setLoadingScreenMode(favoriteLoadingScreen, "show");
+        deleteButton.classList.add("hidden");
+       
+        fetch(favoritesURL, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ name })
+        }).then(res => {
+                if (!res.ok) {
+                    throw new Error();
+                }
+
+                favoriteItem.remove();
+
+                console.log(`Deleted favorite (${name})`);
+            })
+            .catch(err => {
+                setLoadingScreenMode(favoriteLoadingScreen, "close");
+                deleteButton.classList.remove("hidden");
+
+                console.error("Failed to delete favorite", err);
+            })
     });
 
     favoriteItem.querySelector(".place-name").innerHTML = name;
 
     favoritesList.append(favoriteItem);
 
-    let favoriteLoadingScreen = favoriteItem.querySelector(".loading-screen");
     handleAPIRequest({ name },
         data => {
             fillInfoContainer(data, favoriteItem);
@@ -139,19 +159,24 @@ function addNewFavorite() {
         return;
     }
 
-    let storage = window.localStorage;
-    if (storage["favorites"] == null) {
-        storage["favorites"] = JSON.stringify([ newFavoriteName ]);
-    }
-    else {
-        storage["favorites"] = JSON.stringify(
-            JSON.parse(storage["favorites"])
-                .concat([ newFavoriteName ]));
-    }
+    fetch(favoritesURL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name : newFavoriteName })
+    }).then(res => {
+        if (!res.ok) {
+            throw new Error();
+        }
 
-    appendFavorite(newFavoriteName);
-    console.log(`Added favorite (${newFavoriteName}): ` + storage["favorites"]);
-    
+        appendFavorite(newFavoriteName);
+        console.log(`Added favorite (${newFavoriteName})`);
+    })
+    .catch(err => {
+        console.log("Failed to add a favorite");
+    });
+
     newFavoriteInput.value = "";
     newFavoriteInput.focus();
 }
@@ -164,13 +189,25 @@ newFavoriteForm.addEventListener("submit", evt => {
 function init() {
     refreshGeolocationData();
 
-    if (window.localStorage["favorites"] != null) {
-        let favorites = JSON.parse(window.localStorage["favorites"]);
-        favorites.map(obj => {
-            appendFavorite(obj);
-            console.log("Loaded favorite: ", obj);
-        });
-    }
+    fetch(favoritesURL)
+        .then(res => {
+            if (!res.ok) {
+                throw new Error();
+            }
+
+            console.log("Got favorites list");
+
+            return res.json();
+        })
+        .then(data => {
+            data.favorites.map(obj => {
+                appendFavorite(obj.name);
+                console.log("Loaded favorite:", obj);
+            })
+        })
+        .catch(err => {
+            console.log("Failed to load favorites");
+        })
 }
 
 init();
