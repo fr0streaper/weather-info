@@ -1,12 +1,14 @@
 const express = require("express");
 const fetch = require("node-fetch");
 const { MongoClient } = require("mongodb");
+const cors = require("cors");
 
 const port = process.env.PORT || 3000;
 const mongoURL = "mongodb://localhost:27017";
 const mongoClient = MongoClient(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true });
 
 let app = express();
+app.use(cors());
 app.use(express.static("public"));
 app.use(express.json());
 
