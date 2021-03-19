@@ -102,7 +102,7 @@ const favoritesURL = `${serverURL}/favorites`;
 let favoritesList = document.querySelector(".favorites-list");
 const favoriteItemTemplate = document.querySelector("#favorite-item-template");
 
-function appendFavorite(name) {
+function createFavorite(name) {
     let favoriteItem = favoriteItemTemplate.content
         .cloneNode(true).querySelector(".favorite-item");
     let favoriteLoadingScreen = favoriteItem.querySelector(".loading-screen");
@@ -137,7 +137,13 @@ function appendFavorite(name) {
 
     favoriteItem.querySelector(".place-name").innerHTML = name;
 
-    favoritesList.append(favoriteItem);
+    return favoriteItem;
+}
+
+function handleFavoriteInDB(favoriteItem) {
+    let favoriteLoadingScreen = favoriteItem.querySelector(".loading-screen");
+    let deleteButton = favoriteItem.querySelector(".favorite-header > button");
+    let name = favoriteItem.querySelector(".place-name").innerHTML;
 
     handleAPIRequest({ name },
         data => {
@@ -146,7 +152,11 @@ function appendFavorite(name) {
             favoriteItem.querySelector(".temperature").classList.remove("hidden");
             setLoadingScreenMode(favoriteLoadingScreen, "close");
         },
-        err => setLoadingScreenMode(favoriteLoadingScreen, "error"))
+        err => {
+            setLoadingScreenMode(favoriteLoadingScreen, "error");
+            alert(`Failed to get weather data for ${name}. Maybe the name is incorrect?`);
+            deleteButton.click();
+        })
 }
 
 const newFavoriteForm = document.querySelector(".new-favorite-form");
@@ -159,6 +169,10 @@ function addNewFavorite() {
         return;
     }
 
+    let newFavorite = createFavorite(newFavoriteName);
+
+    favoritesList.append(newFavorite);
+
     fetch(favoritesURL, {
         method: "POST",
         headers: {
@@ -170,11 +184,14 @@ function addNewFavorite() {
             throw new Error();
         }
 
-        appendFavorite(newFavoriteName);
+        handleFavoriteInDB(newFavorite);
         console.log(`Added favorite (${newFavoriteName})`);
     })
     .catch(err => {
+        alert("Failed to add a favorite");
+        newFavorite.remove();
         console.log("Failed to add a favorite");
+        console.error(err);
     });
 
     newFavoriteInput.value = "";
@@ -201,7 +218,9 @@ function init() {
         })
         .then(data => {
             data.favorites.map(obj => {
-                appendFavorite(obj.name);
+                let favorite = createFavorite(obj.name);
+                favoritesList.append(favorite);
+                handleFavoriteInDB(favorite);
                 console.log("Loaded favorite:", obj);
             })
         })
